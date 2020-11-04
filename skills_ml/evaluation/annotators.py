@@ -5,7 +5,7 @@ import unicodecsv as csv
 from statistics import mean
 
 import s3fs
-from descriptors import cachedproperty
+from cached_property import cached_property
 
 from skills_utils.iteration import Batch
 from skills_utils.s3 import S3BackedJsonDict
@@ -263,7 +263,7 @@ class BratExperiment(object):
         logging.info('Allocation created! Directory is %s', dest_dir)
         return dest_dir
 
-    @cachedproperty
+    @cached_property
     def annotations_by_unit(self):
         """Fetch raw annotations by unit
 
@@ -310,7 +310,7 @@ class BratExperiment(object):
 
         return annotations_by_unit
 
-    @cachedproperty
+    @cached_property
     def sequence_tagged_annotations(self):
         """Fetch sequence tagged annotations
 
@@ -383,7 +383,7 @@ class BratExperiment(object):
                     agreement[unit_name][posting_key] = None
         return agreement
 
-    @cachedproperty
+    @cached_property
     def labels_with_agreement_by_unit(self):
         """Fetch annotations with agreement by unit and job posting
 
@@ -436,7 +436,7 @@ class BratExperiment(object):
 
         return labels_with_agreement
 
-    @cachedproperty
+    @cached_property
     def sample_lookup(self):
         if 'sample_base_path' not in self.metadata or 'sample_name' not in self.metadata:
             raise ValueError('Sample information needs to be available to look up sample. Have you run .start on this BratExperiment yet?')
@@ -454,7 +454,7 @@ class BratExperiment(object):
             return text
 
 
-    @cachedproperty
+    @cached_property
     def candidate_skills(self):
         """Format labels as CandidateSkills.
 

@@ -1,7 +1,7 @@
 from .base import Competency, Occupation, CompetencyOntology
 from .clustering import Clustering
 from skills_ml.datasets.onet_cache import OnetSiteCache
-from descriptors import cachedproperty
+from cached_property import cached_property
 import logging
 
 majorgroupname = {
@@ -109,7 +109,7 @@ class Onet(CompetencyOntology):
         else:
             logging.warning('O*Net Ontology is already built!')
 
-    @cachedproperty
+    @cached_property
     def all_soc(self):
         occupations = self.occupations
         soc = []
@@ -118,7 +118,7 @@ class Onet(CompetencyOntology):
                 soc.append(occ.identifier)
         return sorted(soc)
 
-    @cachedproperty
+    @cached_property
     def all_major_groups(self):
         occupations = self.occupations
         major_groups = []
@@ -127,16 +127,16 @@ class Onet(CompetencyOntology):
                 major_groups.append(occ)
         return sorted(major_groups, key=lambda k: k.identifier)
 
-    @cachedproperty
+    @cached_property
     def all_major_groups_occ(self):
         occ = self.filter_by(lambda edge: len(edge.occupation.identifier) == 2)
         return occ.occupations
 
-    @cachedproperty
+    @cached_property
     def competency_categories(self):
         return set(c.categories[0] for c in self.competencies)
 
-    @cachedproperty
+    @cached_property
     def major_group_occupation_name_clustering(self):
         d = Clustering(
                 name="major_group_occupations_name",
@@ -147,7 +147,7 @@ class Onet(CompetencyOntology):
             d[mg] = [child for child in mg.children]
         return d
 
-    @cachedproperty
+    @cached_property
     def major_group_occupation_description_clustering(self):
         d = Clustering(
                 name="major_group_occupations_description",
@@ -160,7 +160,7 @@ class Onet(CompetencyOntology):
             d[mg] = [child for child in mg.children]
         return d
 
-    @cachedproperty
+    @cached_property
     def major_group_competencies_name_clustering(self):
         d = Clustering(
                 name="major_group_competencies_name",
@@ -171,7 +171,7 @@ class Onet(CompetencyOntology):
             d[mg] = self.filter_by(lambda edge: edge.occupation.identifier[:2] == mg.identifier[:2]).competencies
         return d
 
-    @cachedproperty
+    @cached_property
     def major_group_competencies_description_clustering(self):
         d = Clustering(
                 name="major_group_competencies_description",

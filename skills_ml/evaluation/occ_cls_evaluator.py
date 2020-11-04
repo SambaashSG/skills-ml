@@ -1,5 +1,5 @@
 from sklearn import metrics
-from descriptors import cachedproperty
+from cached_property import cached_property
 
 import logging
 import numpy as np
@@ -14,55 +14,55 @@ class ClassificationEvaluator(object):
             self.labels = self.target_variable.choices
         self.result = np.array(list(self.result_generator))
 
-    @cachedproperty
+    @cached_property
     def y_pred(self):
         return self.target_variable.encoder.inverse_transform(self.result[:, 0])
 
-    @cachedproperty
+    @cached_property
     def y_true(self):
         return self.target_variable.encoder.inverse_transform(self.result[:, 1])
 
-    @cachedproperty
+    @cached_property
     def accuracy(self):
         return metrics.accuracy_score(self.y_true, self.y_pred)
 
-    @cachedproperty
+    @cached_property
     def precision(self):
         return metrics.precision_score(self.y_true, self.y_pred, labels=self.labels, average=None)
 
-    @cachedproperty
+    @cached_property
     def recall(self):
         return metrics.recall_score(self.y_true, self.y_pred, labels=self.labels, average=None)
 
-    @cachedproperty
+    @cached_property
     def f1(self):
         return metrics.f1_score(self.y_true, self.y_pred, labels=self.labels, average=None)
 
-    @cachedproperty
+    @cached_property
     def confusion_matrix(self):
         return metrics.confusion_matrix(self.y_true, self.y_pred)
 
-    @cachedproperty
+    @cached_property
     def macro_precision(self):
         return metrics.precision_score(self.y_true, self.y_pred, average='macro')
 
-    @cachedproperty
+    @cached_property
     def micro_precision(self):
         return metrics.precision_score(self.y_true, self.y_pred, average='micro')
 
-    @cachedproperty
+    @cached_property
     def macro_recall(self):
         return metrics.recall_score(self.y_true, self.y_pred, average='macro')
 
-    @cachedproperty
+    @cached_property
     def micro_recall(self):
         return metrics.recall_score(self.y_true, self.y_pred, average='micro')
 
-    @cachedproperty
+    @cached_property
     def macro_f1(self):
         return metrics.f1_score(self.y_true, self.y_pred, average='macro')
 
-    @cachedproperty
+    @cached_property
     def micro_f1(self):
         return metrics.f1_score(self.y_true, self.y_pred, average='micro')
 
@@ -76,13 +76,13 @@ class OnetOccupationClassificationEvaluator(ClassificationEvaluator):
             self.target_variable = self.result_generator.target_variable
             self.labels = self.target_variable.choices
 
-    @cachedproperty
+    @cached_property
     def _result_for_major_group(self):
         y_pred = [p[:2] for p in self.y_pred]
         y_true = [t[:2] for t in self.y_true]
         return y_true, y_pred
 
-    @cachedproperty
+    @cached_property
     def accuracy_major_group(self):
         if self.target_variable.name == 'full_soc':
             y_true, y_pred = self._result_for_major_group
@@ -91,7 +91,7 @@ class OnetOccupationClassificationEvaluator(ClassificationEvaluator):
         elif self.target_variable.name == 'major_group':
             return self.accuracy
 
-    @cachedproperty
+    @cached_property
     def recall_per_major_group(self):
         if self.target_variable.name == 'major_group':
             return self.recall
@@ -99,7 +99,7 @@ class OnetOccupationClassificationEvaluator(ClassificationEvaluator):
             y_true, y_pred = self._result_for_major_group
             return metrics.recall_score(y_true, y_pred, average=None)
 
-    @cachedproperty
+    @cached_property
     def precision_per_major_group(self):
         if self.target_variable.name == 'major_group':
             return self.precision
@@ -107,7 +107,7 @@ class OnetOccupationClassificationEvaluator(ClassificationEvaluator):
             y_true, y_pred = self._result_for_major_group
             return metrics.precision_score(y_true, y_pred, average=None)
 
-    @cachedproperty
+    @cached_property
     def f1_per_major_group(self):
         if self.target_variable.name == 'major_group':
             return self.f1
