@@ -1,6 +1,6 @@
 import json
 
-from descriptors import cachedproperty
+from cached_property import cached_property
 
 from skills_ml.job_postings.corpora import SimpleCorpusCreator
 
@@ -14,11 +14,11 @@ class JobPosting(object):
         else:
             self.corpus_creator = SimpleCorpusCreator()
 
-    @cachedproperty
+    @cached_property
     def text(self):
         return self.corpus_creator._join(self.properties)
 
-    @cachedproperty
+    @cached_property
     def id(self):
         return self.properties['id']
 

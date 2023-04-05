@@ -1,7 +1,7 @@
 """Use fuzzy matching with a source list to extract skills
 from unstructured text"""
 import logging
-from descriptors import cachedproperty
+from cached_property import cached_property
 from math import ceil
 
 import nltk
